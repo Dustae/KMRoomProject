@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import PropTypes from 'deprecated-react-native-prop-types';
 
 function LoginScreen({ navigation }) {
   // Handle user login
