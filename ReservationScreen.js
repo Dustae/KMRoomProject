@@ -96,7 +96,7 @@ export default class ReservationScreen extends Component {
           </LinearGradient>
         </ImageBackground>
 
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View style={styles.SearchBar}>
               <IconM name="search" size={24} color="gray" style={styles.icon} />
@@ -112,7 +112,7 @@ export default class ReservationScreen extends Component {
             <CalendarStrip
               scrollable
               style={{ height: screenHeight * 0.12, paddingTop: 10, paddingBottom: 10, backgroundColor: 'rgba(255, 255, 255, 1)' }}
-              calendarAnimation={{ type: 'sequence', duration: 500 }}
+              calendarAnimation={{ type: 'sequence', duration: 50 }}
               // calendarColor={'#fff'}
               dateNumberStyle={{ color: 'gray' }}
               dateNameStyle={{ color: 'gray' }}
@@ -126,7 +126,7 @@ export default class ReservationScreen extends Component {
               onDateSelected={this.handleDateSelected} // Callback for date selection
             />
           </View>
-          <Text style={styles.description} >Selected Date: {selectedDate ? selectedDate.toDateString() : 'None'}</Text>
+          {/* <Text style={styles.description} >Selected Date: {selectedDate ? selectedDate.toDateString() : 'None'}</Text> */}
 
 
           <View style={styles.contentContainer}>
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: screenWidth * 0.5, // Set the desired width
     height: screenHeight * 0.05,
-    marginTop: screenHeight * 0.1,
+    marginTop: screenHeight * 0.16,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -303,7 +303,6 @@ const styles = StyleSheet.create({
     
   },
   icon: {
-    tintColor: 'gray', // You can change the color of the icon
     marginLeft: 10,
     alignItems: 'center',
   },
@@ -388,7 +387,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: '#ddd',
     borderRadius: 15,
-    marginTop: screenHeight * 0.12, // ความห่างของแต่ละกล่องบนล่าง
+    marginTop: screenHeight * 0.06, // ความห่างของแต่ละกล่องบนล่าง
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
