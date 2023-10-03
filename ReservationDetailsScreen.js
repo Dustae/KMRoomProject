@@ -1,18 +1,33 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Animated, Easing } from 'react-native';
 import PropTypes from 'deprecated-react-native-prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Modal from 'react-native-modal';
 
 
 function ReservationDetailsScreen() {
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [isModalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
   const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
+
+  const startAnimation = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true, // Use the native driver for better performance
+      easing: Easing.ease, // Specify an easing function
+    }).start();
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   // Handle the back button press
   const handleBackPress = () => {
@@ -21,6 +36,7 @@ function ReservationDetailsScreen() {
 
   const InformationBlock = () => {
     return (
+
       <View style={styles.OverviewContainer}>
         <View style={styles.ClockContainer}>
           <Icon name="clock-o" size={24} color="orange" />
@@ -30,6 +46,7 @@ function ReservationDetailsScreen() {
           <Text style={styles.value}>2 hours</Text>
         </View>
       </View>
+
     );
   };
 
@@ -47,7 +64,9 @@ function ReservationDetailsScreen() {
     );
   };
 
+
   return (
+
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
         <Image
@@ -83,13 +102,33 @@ function ReservationDetailsScreen() {
       <Text style={styles.RoomServiceDescription}>KM Rooms for tutoring and the discussion.</Text>
       <Text style={styles.RoomServiceDescription}>KM Stands for tutoring in open space.</Text>
 
+
       <View style={styles.container}>
-        <TouchableOpacity style={styles.buttonReserve}>
+        <TouchableOpacity style={styles.buttonReserve} onPress={toggleModal}>
           <Text style={styles.buttonReserveText}>Reserve</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        isVisible={isModalVisible}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationInTiming={200}
+        animationOutTiming={200}>
+        <View style={styles.modalContent}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={toggleModal}>
+              <View style={styles.closeIconContainer}>
+                <Icon name="check" size={32} color="blue" style={styles.closeIcon} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.successText}>Reserve Room Successfully !</Text>
+        </View>
+      </Modal>
     </ScrollView>
+
   );
+
 }
 
 const screenWidth = Dimensions.get('window').width;
@@ -102,6 +141,44 @@ const iconContainerLeft = screenWidth * 0.08;
 const iconContainerTop = screenWidth * 0.08;
 
 const styles = StyleSheet.create({
+  successText: {
+    fontSize: screenWidth * 0.06,
+    fontWeight: 'bold',
+    color: 'green',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  closeIconContainer: {
+    backgroundColor: 'green',
+    borderRadius: 40, // Make it circular
+    padding: screenWidth * 0.05,
+
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: screenHeight * 0.06,
+    borderRadius: 25,
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  modalHeader: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  closeIcon: {
+    fontSize: screenWidth * 0.06,
+    color: 'white',
+  },
   buttonReserve: {
     backgroundColor: 'black',    // Button background color
     height: screenHeight * 0.07,         // Vertical padding
@@ -184,12 +261,6 @@ const styles = StyleSheet.create({
     alignItems: '',
     paddingHorizontal: '5%', // Apply calculated horizontal padding
     paddingTop: '5%', // Apply calculated top padding
-    // Add shadow properties here
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -215,11 +286,6 @@ const styles = StyleSheet.create({
     top: iconContainerTop, // Adjust the top position to center it vertically
     left: iconContainerLeft, // Adjust the left position to center it horizontally
     zIndex: 1, // Ensure the icon is displayed above the image
-    shadowColor: 'rgba(0, 0, 0, 0.5)', // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // Shadow offset (horizontal and vertical)
-    shadowOpacity: 0.8, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
-    elevation: 4, // Android drop shadow
   },
   hearticonContainer: {
     width: 40,
@@ -232,11 +298,6 @@ const styles = StyleSheet.create({
     top: iconContainerTop, // Adjust the top position to center it vertically
     right: iconContainerLeft, // Adjust the left position to center it horizontally
     zIndex: 1, // Ensure the icon is displayed above the image
-    shadowColor: 'rgba(0, 0, 0, 0.5)', // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // Shadow offset (horizontal and vertical)
-    shadowOpacity: 0.8, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
-    elevation: 4, // Android drop shadow
   },
   overlay: {
     ...StyleSheet.absoluteFillObject, // Position the overlay to cover the entire image
