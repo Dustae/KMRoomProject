@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Animated, Easing } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Animated, Easing, StatusBar } from 'react-native';
 import PropTypes from 'deprecated-react-native-prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flexGrow: 1,
+    marginTop: screenHeight * 0.05,
   },
   image: {
     width: '100%',

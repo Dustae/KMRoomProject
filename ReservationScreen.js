@@ -24,6 +24,7 @@ export default class ReservationScreen extends Component {
       buttonText2: '10:30 - 12:20',
       buttonText3: '12:30 - 14:20',
       buttonText4: '14:30 - 16:20',
+      isSelected: false, // Initially, the button is not selected
     };
   }
   componentDidMount() {
@@ -45,10 +46,17 @@ export default class ReservationScreen extends Component {
   };
 
   handleButtonClick1 = () => {
-    this.setState((prevState) => ({
-      buttonText1: prevState.buttonText1 === 'Click Me' ? 'Button Clicked!' : 'Click Me',
-    }));
+    if (this.state.isSelected) {
+      // If already selected, navigate to RequestScreen
+      this.props.navigation.navigate('ReservationRequest');
+    } else {
+      // If not selected, toggle the isSelected state and change the style
+      this.setState((prevState) => ({
+        isSelected: !prevState.isSelected,
+      }));
+    }
   };
+  
 
   handleButtonClick2 = () => {
     this.setState((prevState) => ({
@@ -69,8 +77,9 @@ export default class ReservationScreen extends Component {
   };
 
 
+
   render() {
-    const { buttonText1, buttonText2, buttonText3, buttonText4 } = this.state;
+    const { isSelected, buttonText1, buttonText2, buttonText3, buttonText4 } = this.state;
     const headerImageBackgroundWidth = screenWidth;
     const headerImageBackgroundHeight = screenHeight / 3;
     const { selectedDate } = this.state;
@@ -82,7 +91,25 @@ export default class ReservationScreen extends Component {
 
     };
     const calendarStripMarginTop = screenHeight * 0.12 * -1;
+
+
+    const buttonStyle = isSelected
+      ? {
+        ...styles.buttonSelecting,
+      }
+      : {
+        ...styles.button,
+      };
+
+    const textStyle = isSelected
+      ? {
+        ...styles.buttonSelectingText,
+      }
+      : {
+        ...styles.buttonText,
+      };
     return (
+      
       <View>
         {/* Top Header with Image Background */}
         <ImageBackground
@@ -152,8 +179,8 @@ export default class ReservationScreen extends Component {
                     <TouchableOpacity style={styles.buttonDisabled} onPress={this.handleButtonClick1}>
                       <Text style={styles.buttonDisabledText}>{buttonText1}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSelecting} onPress={this.handleButtonClick2}>
-                      <Text style={styles.buttonSelectingText}>{buttonText2}</Text>
+                    <TouchableOpacity style={buttonStyle} onPress={this.handleButtonClick1}>
+                      <Text style={textStyle}>{buttonText2}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={this.handleButtonClick3}>
                       <Text style={styles.buttonText}>{buttonText3}</Text>
@@ -300,7 +327,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     fontSize: CustomfontSize * 0.03,
-    
+
   },
   icon: {
     marginLeft: 10,
@@ -309,6 +336,21 @@ const styles = StyleSheet.create({
   ButtonRowcontainer: {
     flexDirection: 'row', // Arrange buttons horizontally
     justifyContent: 'space-between', // Add space between buttons
+  },
+  buttonConfirm: {
+    borderWidth: 0,
+    backgroundColor: 'orange',
+    borderRadius: 10,
+    width: screenWidth * 0.2, // Set the desired width
+    height: screenHeight * 0.03,
+    marginTop: screenHeight * 0.02,
+    justifyContent: 'center',
+  },
+  buttonConfirmText: {
+    fontSize: CustomfontSize * 0.02,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   button: {
     borderWidth: 1,
