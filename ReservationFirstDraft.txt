@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar, Animated } from 'react-native';
 import { ScrollView, Image } from 'react-native';
-import CalendarStrip from 'react-native-calendar-strip';
+import CalendarStrip from 'react-native-calendar-strip'; //sss
 
 
 const screenWidth = Dimensions.get('window').width;
