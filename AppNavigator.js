@@ -1,13 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ReservationScreen from './ReservationScreen';
+import ReservationIndexScreen from './ReservationIndex';
 import ReservationDetailsScreen from './ReservationDetailsScreen';
 import ReservationRequestScreen from './ReservationRequestScreen';
 
 import LoginScreen from './LoginScreen'; // Import the LoginScreen component
 import React, { useState } from 'react';
 import PropTypes from 'deprecated-react-native-prop-types';
-import { HeaderBackButton } from '@react-navigation/stack';
 
 
 const Stack = createStackNavigator();
@@ -19,16 +19,17 @@ function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName={authenticated ? 'Reservation' : 'Login'}
+      initialRouteName={authenticated ? 'ReservationIndex' : 'Login'}
       screenOptions={{
         headerStyle: { backgroundColor: 'transparent' }, // Set the background color of the header
         headerTintColor: 'black', // Set the text color of the header
-        headerShown: false
+        headerShown: false,
       }}
     >
       {authenticated ? (
         <>
           <Stack.Screen name="Reservation" component={ReservationScreen} options={{title: 'ModLib'}} />
+          <Stack.Screen name="ReservationIndex" component={ReservationIndexScreen} options={{title: 'Home'}} />
           <Stack.Screen name="ReservationDetails" component={ReservationDetailsScreen} options={{title: '5th floor library', headerLeft: null}}/>
           <Stack.Screen name="ReservationRequest" component={ReservationRequestScreen} options={{title: null, headerLeft: null}}/>
         </>

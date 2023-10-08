@@ -16,15 +16,6 @@ function ReservationDetailsScreen() {
   const screenHeight = Dimensions.get('window').height;
   const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
 
-  const startAnimation = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true, // Use the native driver for better performance
-      easing: Easing.ease, // Specify an easing function
-    }).start();
-  };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -161,8 +152,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   modalHeader: {

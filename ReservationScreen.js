@@ -1,12 +1,13 @@
 import { style } from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
 import React, { Component } from 'react';
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar, Animated, TextInput } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar, Animated, TextInput, SafeAreaView } from 'react-native';
 import { ScrollView, Image } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import Gradient from './Gradient'; // Import the Gradient component
 import { LinearGradient } from "expo-linear-gradient";
 import { customText } from 'react-native-paper';
 import IconM from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -15,16 +16,15 @@ const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
 // Calculate the font size based on screen dimensions
 const CustomfontSize = Math.min(screenWidth, screenHeight);
 
+const iconContainerLeft = screenWidth * 0.08;
+const iconContainerTop = screenWidth * 0.08;
+
 export default class ReservationScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: new Date(), // Initialize with the current date or the default selected date
-      buttonText1: '08:30 - 10:20',
-      buttonText2: '10:30 - 12:20',
-      buttonText3: '12:30 - 14:20',
-      buttonText4: '14:30 - 16:20',
-      isSelected: false, // Initially, the button is not selected
+      selectedDate: this.props.route.params.selectedDate || new Date(),
+      selectedButton: null, // Initially, no button is selected
     };
   }
   componentDidMount() {
@@ -44,84 +44,97 @@ export default class ReservationScreen extends Component {
     const parsedDate = new Date(date);
     this.setState({ selectedDate: parsedDate });
   };
-
-  handleButtonClick1 = () => {
-    if (this.state.isSelected) {
-      // If already selected, navigate to RequestScreen
-      this.props.navigation.navigate('ReservationRequest');
-    } else {
-      // If not selected, toggle the isSelected state and change the style
-      this.setState((prevState) => ({
-        isSelected: !prevState.isSelected,
-      }));
-    }
-  };
-  
-
-  handleButtonClick2 = () => {
+  handleButtonClick = (buttonId) => {
     this.setState((prevState) => ({
-      buttonText2: prevState.buttonText2 === 'Click Me' ? 'Button Clicked!' : 'Click Me',
+      selectedButton: prevState.selectedButton === buttonId ? null : buttonId,
+
     }));
+    // Navigate to ReservationRequest page when a button is clicked
+    this.props.navigation.navigate('ReservationRequest');
+    // Automatically reset the selectedButton state after a delay (e.g., 1 second)
+    setTimeout(() => {
+      this.setState({ selectedButton: null });
+    }, 1000); // 1000 milliseconds (1 second)
   };
 
-  handleButtonClick3 = () => {
-    this.setState((prevState) => ({
-      buttonText3: prevState.buttonText3 === 'Click Me' ? 'Button Clicked!' : 'Click Me',
-    }));
+  handleBackPress = () => {
+    this.props.navigation.goBack(); // Assuming you receive navigation prop from a navigator
   };
 
-  handleButtonClick4 = () => {
-    this.setState((prevState) => ({
-      buttonText4: prevState.buttonText4 === 'Click Me' ? 'Button Clicked!' : 'Click Me',
-    }));
-  };
+  renderButton = (buttonId, text) => {
+    const { selectedButton } = this.state;
+    const isSelected = selectedButton === buttonId;
 
+    const buttonStyle = isSelected
+      ? { ...styles.buttonSelected }
+      : { ...styles.button };
+
+    const textStyle = isSelected
+      ? { ...styles.textSelected }
+      : { ...styles.buttonText };
+
+    return (
+      <TouchableOpacity
+        onPress={() => this.handleButtonClick(buttonId)}
+        style={styles.touchableButton}
+        activeOpacity={0.6} // Set the opacity when pressed
+      >
+        <View style={buttonStyle}>
+          <Text style={textStyle}>{text}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
 
   render() {
-    const { isSelected, buttonText1, buttonText2, buttonText3, buttonText4 } = this.state;
     const headerImageBackgroundWidth = screenWidth;
     const headerImageBackgroundHeight = screenHeight / 3;
     const { selectedDate } = this.state;
+    
+
+    const { label, style } = this.props;
+    const { isSelected, isSelected2, isSelected3, isSelected4,
+      isSelected5, isSelected6, isSelected7, isSelected8,
+      isSelected9, isSelected10, isSelected11, isSelected12,
+      isSelected13, isSelected14, isSelected15, isSelected16 } = this.state;
+
 
     // Define a custom dateNumberStyle for selected dates
     const selectedDateNumberStyle = {
       color: 'orange', // You can change the color to your preference
       textDecorationLine: 'underline', // Add underline for selected dates
-
     };
     const calendarStripMarginTop = screenHeight * 0.12 * -1;
 
 
-    const buttonStyle = isSelected
-      ? {
-        ...styles.buttonSelecting,
-      }
-      : {
-        ...styles.button,
-      };
-
-    const textStyle = isSelected
-      ? {
-        ...styles.buttonSelectingText,
-      }
-      : {
-        ...styles.buttonText,
-      };
     return (
-      
-      <View>
-        {/* Top Header with Image Background */}
-        <ImageBackground
-          source={require('./picture/floor1.jpg')}
-          style={styles.headerImageBackground}
-        >
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.6)']}
-            style={styles.gradient}
+
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            source={require('./picture/floor1.jpg')}
+            style={[styles.headerImageBackground]}
           >
-          </LinearGradient>
-        </ImageBackground>
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.6)']}
+              style={styles.gradient}
+            >
+            </LinearGradient>
+          </ImageBackground>
+        </View>
+        <TouchableOpacity onPress={this.handleBackPress} style={{  left: 20, top: 20, zIndex: 1 }}>
+          <View style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: 'white',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <IconM name="keyboard-arrow-left" size={40} color="orange" />
+          </View>
+        </TouchableOpacity>
 
         <ScrollView contentContainerStyle={styles.scrollViewContainer} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
@@ -129,7 +142,7 @@ export default class ReservationScreen extends Component {
               <IconM name="search" size={24} color="gray" style={styles.icon} />
               <TextInput
                 style={styles.input}
-                placeholder="Search"
+                placeholder="Search room name"
                 placeholderTextColor="gray"
               />
             </View>
@@ -150,6 +163,7 @@ export default class ReservationScreen extends Component {
               disabledDateNumberStyle={{ color: 'grey' }}
               calendarHeaderStyle={{ color: 'black' }}
               iconContainer={{ flex: 0.1 }}
+              selectedDate={this.state.selectedDate}
               onDateSelected={this.handleDateSelected} // Callback for date selection
             />
           </View>
@@ -176,18 +190,10 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.ButtonRowcontainer}>
-                    <TouchableOpacity style={styles.buttonDisabled} onPress={this.handleButtonClick1}>
-                      <Text style={styles.buttonDisabledText}>{buttonText1}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={buttonStyle} onPress={this.handleButtonClick1}>
-                      <Text style={textStyle}>{buttonText2}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick3}>
-                      <Text style={styles.buttonText}>{buttonText3}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick4}>
-                      <Text style={styles.buttonText}>{buttonText4}</Text>
-                    </TouchableOpacity>
+                    {this.renderButton(1, '08:30 - 10:20')}
+                    {this.renderButton(2, '10:30 - 12:20')}
+                    {this.renderButton(3, '12:30 - 14:20')}
+                    {this.renderButton(4, '14:30 - 16:20')}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -210,18 +216,10 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.ButtonRowcontainer}>
-                    <TouchableOpacity style={styles.buttonDisabled} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonDisabledText}>{buttonText1}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSelecting} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonSelectingText}>{buttonText2}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText3}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText4}</Text>
-                    </TouchableOpacity>
+                    {this.renderButton(5, '08:30 - 10:20')}
+                    {this.renderButton(6, '10:30 - 12:20')}
+                    {this.renderButton(7, '12:30 - 14:20')}
+                    {this.renderButton(8, '14:30 - 16:20')}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -244,18 +242,10 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.ButtonRowcontainer}>
-                    <TouchableOpacity style={styles.buttonDisabled} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonDisabledText}>{buttonText1}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSelecting} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonSelectingText}>{buttonText2}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText3}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText4}</Text>
-                    </TouchableOpacity>
+                    {this.renderButton(9, '08:30 - 10:20')}
+                    {this.renderButton(10, '10:30 - 12:20')}
+                    {this.renderButton(11, '12:30 - 14:20')}
+                    {this.renderButton(12, '14:30 - 16:20')}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -278,18 +268,10 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.ButtonRowcontainer}>
-                    <TouchableOpacity style={styles.buttonDisabled} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonDisabledText}>{buttonText1}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSelecting} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonSelectingText}>{buttonText2}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText3}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={this.handleButtonClick}>
-                      <Text style={styles.buttonText}>{buttonText4}</Text>
-                    </TouchableOpacity>
+                    {this.renderButton(13, '08:30 - 10:20')}
+                    {this.renderButton(14, '10:30 - 12:20')}
+                    {this.renderButton(15, '12:30 - 14:20')}
+                    {this.renderButton(16, '14:30 - 16:20')}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -298,7 +280,7 @@ export default class ReservationScreen extends Component {
             </View>
           </View>
         </ScrollView>
-      </View>
+      </SafeAreaView >
 
     );
   }
@@ -311,22 +293,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: 'gray',
-    borderRadius: 25,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 15,
     backgroundColor: 'white',
-    width: screenWidth * 0.5, // Set the desired width
+    width: screenWidth * 0.8, // Set the desired width
     height: screenHeight * 0.05,
     marginTop: screenHeight * 0.16,
     elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
     shadowRadius: 4,
+  },
+  touchableButton: {
+    borderRadius: 10,
+    overflow: 'hidden', // Clip the child view to fit the button's rounded corners
+    // margin: 5,
   },
   input: {
     flex: 1,
     padding: 10,
-    fontSize: CustomfontSize * 0.03,
+    fontSize: 11,
 
   },
   icon: {
@@ -347,7 +335,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonConfirmText: {
-    fontSize: CustomfontSize * 0.02,
+    fontSize: 11,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -362,23 +350,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    fontSize: CustomfontSize * 0.02,
+    fontSize: 9,
     color: 'gray',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  buttonSelecting: {
+  buttonSelected: {
     borderWidth: 1,
-    borderColor: 'orange',
+    borderColor: 'orange', // Change the border color when selected
+    backgroundColor: 'orange', // Change the background color when selected
     borderRadius: 10,
     width: screenWidth * 0.2, // Set the desired width
     height: screenHeight * 0.03,
     marginTop: screenHeight * 0.02,
     justifyContent: 'center',
   },
-  buttonSelectingText: {
-    fontSize: CustomfontSize * 0.02,
-    color: 'orange',
+  textSelected: {
+    fontSize: 8,
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -391,7 +380,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonDisabledText: {
-    fontSize: CustomfontSize * 0.02,
+    fontSize: 8,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -413,16 +402,16 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.95, // Adjust the width as needed
     height: screenHeight * 0.15,
     justifyContent: 'center',
-    borderWidth: 0,
-    borderColor: '#ddd',
+    borderWidth: 1,
+    borderColor: 'white',
     borderRadius: 15,
     padding: 8, // ขอบบนรูปกับขอบกล่อง
     marginVertical: screenHeight * 0.02, // ความห่างของแต่ละกล่องบนล่าง
     backgroundColor: 'white',
     elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   canlendar: {
@@ -432,7 +421,7 @@ const styles = StyleSheet.create({
     marginTop: screenHeight * 0.06, // ความห่างของแต่ละกล่องบนล่าง
     elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
   },
@@ -452,12 +441,12 @@ const styles = StyleSheet.create({
   },
   textbold: {
     marginTop: 5,
-    fontSize: screenWidth * 0.03,
+    fontSize: 12,
     fontWeight: 'bold',
     textAlign: 'left',
   },
   description: {
-    fontSize: screenWidth * 0.02, // Adjust the font size as needed
+    fontSize: 8, // Adjust the font size as needed
     color: 'gray', // You can adjust the color
     textAlign: 'left',
   },
@@ -469,7 +458,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerImageBackground: {
-    width: screenWidth * 1, // Adjust the width as needed
+    width: '100%', // Adjust the width as needed
     height: screenHeight / 3,
     position: 'absolute', // Position the image behind other components
     resizeMode: 'cover', // Adjust as needed
