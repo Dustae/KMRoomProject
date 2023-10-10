@@ -1,306 +1,297 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Animated, Easing, StatusBar } from 'react-native';
-import PropTypes from 'deprecated-react-native-prop-types';
-import { useNavigation } from '@react-navigation/native';
-import { HeaderBackButton } from '@react-navigation/stack';
-import IconM from 'react-native-vector-icons/MaterialIcons';
+import { style } from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
+import React, { Component, useState } from 'react';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, StatusBar, Animated, TextInput, Modal, UIManager, findNodeHandle } from 'react-native';
+import { ScrollView, Image } from 'react-native';
+import CalendarStrip from 'react-native-calendar-strip';
+import Gradient from './Gradient'; // Import the Gradient component
+import { LinearGradient } from "expo-linear-gradient";
+import { customText } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Modal from 'react-native-modal';
+import IconM from 'react-native-vector-icons/MaterialIcons';
 
-
-function ReservationDetailsScreen() {
-  const [fadeAnim] = useState(new Animated.Value(0));
-  const [isModalVisible, setModalVisible] = useState(false);
-  const navigation = useNavigation();
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
-  const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  // Handle the back button press
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
-
-  const InformationBlock = () => {
-    return (
-
-      <View style={styles.OverviewContainer}>
-        <View style={styles.ClockContainer}>
-          <Icon name="clock-o" size={24} color="orange" />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.label}>Time:</Text>
-          <Text style={styles.value}>2 hours</Text>
-        </View>
-      </View>
-
-    );
-  };
-
-  const RatingBlock = () => {
-    return (
-      <View style={styles.OverviewContainer}>
-        <View style={styles.ClockContainer}>
-          <Icon name="star" size={24} color="orange" />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.label}>Rating:</Text>
-          <Text style={styles.value}>4.9/5</Text>
-        </View>
-      </View>
-    );
-  };
-
-
-  return (
-
-    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <View style={styles.container}>
-        <Image
-          source={require('./picture/floor1.jpg')}
-          style={[styles.image, { width: screenWidth * 0.9, height: screenHeight * 0.5 }]}
-        />
-        <View style={styles.overlay}>
-          <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-            <View style={styles.iconContainer}>
-              <IconM name="keyboard-arrow-left" size={40} color="orange" />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-            <View style={styles.hearticonContainer}>
-              <Icon name="heart" size={20} color="orange" />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.informationRow}>
-        <View style={styles.informationColumn}>
-          <Text style={styles.headerText}>Overview</Text>
-          <InformationBlock label="Time" />
-        </View>
-        <View style={[styles.informationColumn, { paddingHorizontal: screenWidth * 0.05 }]}>
-          <Text style={styles.headerText}>Review</Text>
-          <RatingBlock label="Review" />
-        </View>
-      </View>
-      <Text style={styles.DateTimeText}>Date/Time</Text>
-      <Text style={styles.DateTimeTextDescription}>24 SUNDAY 12:30 - 14:20</Text>
-      <Text style={styles.RoomService}>Services</Text>
-      <Text style={styles.RoomServiceDescription}>KM Rooms for tutoring and the discussion.</Text>
-      <Text style={styles.RoomServiceDescription}>KM Stands for tutoring in open space.</Text>
-
-
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.buttonReserve} onPress={toggleModal}>
-          <Text style={styles.buttonReserveText}>Reserve</Text>
-        </TouchableOpacity>
-      </View>
-      <Modal
-        isVisible={isModalVisible}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        animationInTiming={200}
-        animationOutTiming={200}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={toggleModal}>
-              <View style={styles.closeIconContainer}>
-                <Icon name="check" size={32} color="blue" style={styles.closeIcon} />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.successText}>Reserve Room Successfully !</Text>
-        </View>
-      </Modal>
-    </ScrollView>
-
-  );
-
-}
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const paddingHorizontal = screenWidth * 0.05;
-const paddingTop = screenHeight * 0.05;
+// Define a scaling factor based on your design or preferences
+const scalingFactor = 0.04; // You can adjust this value
 
-const iconContainerLeft = screenWidth * 0.08;
-const iconContainerTop = screenWidth * 0.08;
+// Calculate the responsive font size
+const fontSize = screenWidth * scalingFactor;
+
+
+
+export default class ReservationDetailsScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            studentID: '', // Student ID input value
+            name: '', // Name input value
+
+            isDropdownOpen: false,
+            selectedOption: '',
+
+        };
+        this.inputBoxRef = React.createRef();
+    }
+
+    toggleDropdown = () => {
+        this.setState((prevState) => ({
+            isDropdownOpen: !prevState.isDropdownOpen,
+        }));
+    };
+    selectOption = (option) => {
+        this.setState({
+            selectedOption: option,
+            isDropdownOpen: false, // Close the dropdown after selection
+        });
+    };
+    componentDidMount() {
+
+    }
+
+    handleBoxPress = (boxNumber) => {
+        // Implement your logic here when a box is clicked
+        // alert(`Box ${boxNumber} clicked!`);
+        // Navigate to ReservationDetailsScreen
+        this.props.navigation.navigate('ReservationDetails');
+    };
+    handleBackPress = () => {
+        this.props.navigation.goBack(); // Assuming you receive navigation prop from a navigator
+    };
+
+    render() {
+        const { selectedOption, isDropdownOpen } = this.state;
+        const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+        const dropdownHeight = isDropdownOpen ? options.length * 40 : 0;
+        const handleSubmission = () => {
+            // Handle the submission logic here
+        };
+        return (
+            <SafeAreaView style={{ flex: 1 }} edges={[]} forceInset={{ bottom: 'never' }}>
+                <View>
+                    <ScrollView
+                        contentContainerStyle={styles.scrollViewContainer}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <View style={styles.contentContainer}>
+                            <TouchableOpacity
+                                onPress={this.handleBackPress}
+                                style={[{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 20, // Half of the width/height to create a circle
+                                    backgroundColor: 'white',
+                                    borderColor: 'gray',
+                                    borderWidth: 0.5,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginBottom: 10,
+                                }]}
+                            >
+                                <View style={[{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }]}>
+                                    <IconM name="keyboard-arrow-left" size={30} color="orange" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={[{ alignContent: 'center', alignItems: 'center' }]}>
+                                < Image
+                                    source={require('./picture/floor1.jpg')}
+                                    style={
+                                        [{
+                                            width: screenWidth * 0.9,
+                                            height: screenWidth * 0.8,
+                                            borderRadius: 15,
+                                        }]} resizeMode='cover'
+                                />
+                            </View>
+
+                            <View style={[{ padding: 8, }]}>
+                                <Text style={[{
+                                    fontSize: 18,
+                                    fontWeight: 'bold',
+                                    alignItems: 'center',
+                                    color: 'orange',
+                                    marginTop: screenWidth * 0.02,
+                                }]}>Overview</Text>
+                                <View style={[{
+                                    flexDirection: 'row', // Arrange items horizontally
+                                    marginTop: 8,
+                                }]}>
+
+                                    <View style={[{ marginRight: 10, backgroundColor: '#F2F2F2', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 4, }]}>
+                                        <Icon name="clock-o" size={32} color="orange" />
+                                    </View>
+
+                                    <View style={[{}]}>
+                                        <Text style={[{
+                                            fontSize: 14, // Adjust font size as needed
+                                            color: 'gray',
+                                        }]}>Time</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                        }]}>2 hours</Text>
+                                    </View>
+                                </View>
+
+
+
+                                {/* --------- */}
+
+                                <Text style={[{
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                    alignItems: 'center',
+                                    color: 'orange',
+                                    marginTop: screenWidth * 0.02,
+                                }]}>Date/Time</Text>
+                                <Text style={[{
+                                    fontSize: 14, // Adjust font size as needed
+                                    fontWeight: 'bold', // Bold font for label
+                                    color: 'black',
+                                    marginTop: screenWidth * 0.02,
+                                }]}>24 SUNDAY 12:30 - 14:20</Text>
+
+                                {/* --------- */}
+
+                                <Text style={[{
+                                    fontSize: 18,
+                                    fontWeight: 'bold',
+                                    alignItems: 'center',
+                                    color: 'orange',
+                                    marginTop: screenWidth * 0.02,
+                                }]}>Reservation</Text>
+                                <View style={[{
+                                    flexDirection: 'row', // Arrange items horizontally
+                                    marginTop: 8,
+                                }]}>
+
+                                    <View style={[{ marginRight: 10, paddingHorizontal: 4, paddingVertical: 2, }]}>
+                                        <Icon name="user" size={32} color="orange" />
+                                    </View>
+
+
+                                    <View style={[{
+                                        flexDirection: 'column', // Arrange items horizontally
+                                    }]}>
+                                        <Text style={[{
+                                            fontSize: 14, // Adjust font size as needed
+                                            color: 'gray',
+                                        }]}>Users</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                            marginTop: screenWidth * 0.01,
+
+                                        }]}>Mr.Teerapong Longpenying</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                            marginTop: screenWidth * 0.01,
+
+                                        }]}>Mrs.Susano Uchiha</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                            marginTop: screenWidth * 0.01,
+
+                                        }]}>Ms.Singchai Areenaimpact</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                            marginTop: screenWidth * 0.01,
+
+                                        }]}>Mr.Thanawan Sutthasena</Text>
+                                        <Text style={[{
+                                            flex: 1, flexWrap: 'wrap', fontSize: 14, // Adjust font size as needed
+                                            fontWeight: 'bold', // Bold font for lab
+                                            marginTop: screenWidth * 0.01,
+
+                                        }]}>Mr.Tanatorn Yuwaawech</Text>
+                                    </View>
+                                </View>
+
+
+
+
+
+                            </View>
+
+                        </View>
+                        <TouchableOpacity style={{ alignItems: 'center', marginBottom: 8 }}>
+                            <View style={[{
+                                backgroundColor: '#D7D7D7',
+                                height: screenHeight * 0.06,
+                                borderRadius: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                elevation: 8,
+                                marginTop: 16,
+                                width: screenWidth * 0.9,
+                            }]}>
+                                <Text style={[{
+                                    color: 'white',
+                                    fontSize: 18,
+                                    fontWeight: 'bold',
+                                }]}>Full</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </ScrollView>
+
+                </View >
+            </SafeAreaView >
+
+        );
+    }
+
+}
+
 
 const styles = StyleSheet.create({
-  successText: {
-    fontSize: screenWidth * 0.06,
-    fontWeight: 'bold',
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  closeIconContainer: {
-    backgroundColor: 'green',
-    borderRadius: 40, // Make it circular
-    padding: screenWidth * 0.05,
-
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: screenHeight * 0.06,
-    borderRadius: 25,
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  modalHeader: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  closeIcon: {
-    fontSize: screenWidth * 0.06,
-    color: 'white',
-  },
-  buttonReserve: {
-    backgroundColor: 'black',    // Button background color
-    height: screenHeight * 0.07,         // Vertical padding
-    width: screenWidth * 0.9,
-    borderRadius: 15,            // Border radius for rounded corners
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-  },
-  buttonReserveText: {
-    color: 'white',             // Text color
-    fontSize: 18,               // Font size
-    fontWeight: 'bold',         // Bold font weight
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  RoomService: {
-    fontSize: screenWidth * 0.02, // Adjust font size as needed
-    fontWeight: 'bold', // Bold font for label
-    color: 'gray',
-    marginLeft: screenWidth * 0.05,
-    marginTop: screenHeight * 0.01,
-  },
-  RoomServiceDescription: {
-    fontSize: screenWidth * 0.02, // Adjust font size as needed
-    fontWeight: 'bold', // Bold font for label
-    color: 'gray',
-    marginLeft: screenWidth * 0.05,
-  },
-  DateTimeText: {
-    fontSize: screenWidth * 0.04,
-    fontWeight: 'bold',
-    alignItems: 'center',
-    color: 'orange',
-    marginLeft: screenWidth * 0.05,
-    marginTop: screenHeight * 0.02,
-  },
-  DateTimeTextDescription: {
-    fontSize: screenWidth * 0.02, // Adjust font size as needed
-    fontWeight: 'bold', // Bold font for label
-    color: 'black',
-    marginLeft: screenWidth * 0.05,
-    marginTop: screenHeight * 0.01,
-  },
-  OverviewContainer: {
-    flexDirection: 'row', // Arrange items horizontally
-    alignItems: 'center', // Center items vertically
-    backgroundColor: '', // Background color of the block
-    padding: 10, // Padding around the block
-    borderRadius: 15, // Rounded corners
-    borderWidth: 1, // Border width
-    borderColor: '#ccc', // Border color
-    width: screenWidth * 0.25,
-    height: screenHeight * 0.06,
-    top: screenHeight * 0.01,
-  },
-  ClockContainer: {
-    marginRight: 10, // Margin to separate the icon from text
-  },
-  textContainer: {
-    flex: 1, // Take up remaining horizontal space
-  },
-  label: {
-    fontSize: screenWidth * 0.02, // Adjust font size as needed
-    fontWeight: 'bold', // Bold font for label
-  },
-  value: {
-    fontSize: screenWidth * 0.02, // Adjust font size as needed
-  },
-  informationRow: {
-    flexDirection: 'row', // Arrange blocks horizontall
-    paddingHorizontal: screenWidth * 0.05, // Add horizontal spacing
-  },
-  informationColumn: {
-    flexDirection: 'column', // Arrange boxes horizontally
-    marginBottom: 0, // Add vertical spacing between rows
-  },
-  container: {
-    flex: 0.1,
-    alignItems: '',
-    paddingHorizontal: '5%', // Apply calculated horizontal padding
-    paddingTop: '5%', // Apply calculated top padding
-  },
-  scrollViewContainer: {
-    flexGrow: 1,
-    marginTop: screenHeight * 0.05,
-  },
-  image: {
-    width: '100%',
-    borderRadius: 15,
-    marginTop: 0,
-
-  },
-  backButtonText: {
-    color: 'white', // Customize the button text color
-    fontWeight: 'bold',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute', // Position the icon container absolutely
-    top: iconContainerTop, // Adjust the top position to center it vertically
-    left: iconContainerLeft, // Adjust the left position to center it horizontally
-    zIndex: 1, // Ensure the icon is displayed above the image
-  },
-  hearticonContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute', // Position the icon container absolutely
-    top: iconContainerTop, // Adjust the top position to center it vertically
-    right: iconContainerLeft, // Adjust the left position to center it horizontally
-    zIndex: 1, // Ensure the icon is displayed above the image
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject, // Position the overlay to cover the entire image
-  },
-  headerText: {
-    fontSize: screenWidth * 0.04,
-    fontWeight: 'bold',
-    alignItems: 'center',
-    color: 'orange',
-  },
+    scrollViewContainer: {
+        flexGrow: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+    },
+    contentContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        elevation: 3,
+    },
+    formTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'black',
+        marginBottom: 10,
+    },
+    detailsText: {
+        color: 'orange',
+        marginBottom: 20,
+    },
+    inputRow: {
+        flexDirection: 'row', // Arrange inputs horizontally
+        justifyContent: 'space-between', // Add space between inputs
+    },
+    inputContainer: {
+        marginBottom: 20, //ยืด Container ขาว ๆ ลงล่าง
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 15,
+        padding: '3%',
+        fontSize: 16,
+        height: 40,
+        width: screenWidth * 0.35,
+    },
 
 });
-
-export default ReservationDetailsScreen;

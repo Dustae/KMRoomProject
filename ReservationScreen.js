@@ -23,7 +23,8 @@ export default class ReservationScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: this.props.route.params.selectedDate || new Date(),
+      selectedDate: new Date(),
+      // selectedDate: this.props.route.params.selectedDate || new Date(),
       selectedButton: null, // Initially, no button is selected
     };
   }
