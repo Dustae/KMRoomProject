@@ -31,6 +31,7 @@ const Welcome = ({ navigation }) => {
                                 width: 100,
                                 borderRadius: 20,
                                 top: 10,
+            
                             }}
                         />
                     <Text style={{
@@ -59,7 +60,16 @@ const Welcome = ({ navigation }) => {
 
                     <Button
                         title="Join Now"
-                        onPress={() => navigation.navigate("Login")}
+                        onPress={() => navigation.navigate("LoginFIFA")}
+                        style={{
+                            marginTop: 22,
+                            width: "100%",
+                            color: COLORS.black
+                        }}
+                    />
+                    <Button
+                        title="Join Now"
+                        onPress={() => navigation.navigate("LoginFIFA")}
                         style={{
                             marginTop: 22,
                             width: "100%",
