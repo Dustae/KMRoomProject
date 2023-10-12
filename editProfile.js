@@ -66,7 +66,7 @@ export const FONTS = {
     const [country, setCountry] = useState("Nigeria");
   
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
-    const today = new Date();
+    const today = new Date(); 
     const startDate = getFormatedDate(
       today.setDate(today.getDate() + 1),
       "YYYY/MM/DD"
