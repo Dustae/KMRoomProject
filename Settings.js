@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import COLORS from './assets/colors';
 import Button from './assets/button';
+import { Settings } from 'react-native';
 
 // import font from './react-native.config';
 
@@ -27,7 +28,7 @@ const LoginFIFA = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ 
-                paddingHorizontal: screenWidth*0.3,
+                paddingHorizontal: screenWidth*0.365,
                 position: "absolute",
                 top: screenHeight * 0.03,
                 width: "100%",
@@ -37,14 +38,14 @@ const LoginFIFA = ({ navigation }) => {
                     source={require("./picture/logo.png")}
                     style={{
                         height: screenHeight * 0.125,
-                        width: screenWidth * 0.4,
+                        width: screenWidth * 0.3,
                         // borderRadius: 20,
                         top: 10,
                     }}
                 />
             </View>
 
-            <View style={{ flex: 1, marginHorizontal: screenWidth * 0.05,top:screenHeight * 0.175 }}>
+            <View style={{ flex: 1, marginHorizontal: 22 ,top:screenHeight * 0.175 }}>
                 <View style={{ marginVertical: 22 }}>
                     <Text style={{
                         fontSize: 22,
@@ -188,4 +189,4 @@ const LoginFIFA = ({ navigation }) => {
     );
 };
 
-export default LoginFIFA;
+export default Settings

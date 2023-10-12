@@ -8,6 +8,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { customText } from 'react-native-paper';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import COLORS from './assets/colors';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -152,7 +153,7 @@ export default class ReservationScreen extends Component {
           <View style={styles.canlendar}>
             <CalendarStrip
               scrollable
-              style={{ height: screenHeight * 0.12, paddingTop: 10, paddingBottom: 10, backgroundColor: 'rgba(255, 255, 255, 1)' }}
+              style={{ height: screenHeight * 0.12, paddingTop: 10, paddingBottom: 10, backgroundColor: COLORS.white }}
               calendarAnimation={{ type: 'sequence', duration: 50 }}
               // calendarColor={'#fff'}
               dateNumberStyle={{ color: 'gray' }}
@@ -471,7 +472,8 @@ const styles = StyleSheet.create({
     marginTop: screenHeight / 8, // Adjust the marginTop to push down the content
   },
   contentContainer: {
-    marginTop: 10, // Adjust the marginTop to control the spacing between header and content
+    // top: screenHeight * 0.3, // Adjust the marginTop to control the spacing between header and content
+    backgroundColor: COLORS.grey
     // Add other styles as needed for your content
   },
   gradient: {

@@ -1,8 +1,14 @@
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable, Image ,Dimensions} from 'react-native'
 import React from 'react'
 import { LinearGradient } from "expo-linear-gradient";
-import COLORS from './fifa/colors';
-import Button from './fifa/button';
+import COLORS from './assets/colors';
+import Button from './assets/button';
+
+
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
 
 const Welcome = ({ navigation }) => {
 
@@ -23,55 +29,71 @@ const Welcome = ({ navigation }) => {
                 width: "100%",
                 flex: 1 
             }}>
+              
                 <View>
                     <Image
                             source={require("./picture/logo.png")}
                             style={{
                                 height: 100,
-                                width: 100,
-                                borderRadius: 20,
+                                width: 160,
                                 top: 10,
             
                             }}
                         />
                     <Text style={{
                             paddingTop:20,
-                            fontSize: 50,
-                            fontWeight: 800,
+                            fontSize: 30,
+                            fontWeight: 600,
                             color: COLORS.black
                         }}>Welcome to</Text>
                         <Text style={{
-                            fontSize: 46,
-                            fontWeight: 800,
+                            fontSize: 27,
+                            fontWeight: 600,
                             color: COLORS.black
-                        }}>Kujong</Text>
+                        }}>KMUTT LiB</Text>
 
                 </View>
-
+                <View>
+                <Image
+                            source={require("./picture/iconWelcome.png")}
+                            style={{
+                                top:screenHeight * 0.03,
+                                height: screenHeight * 0.6,
+                                width: "100%",
+                                // marginLeft: 22
+                                
+                            
+                            }}
+                        />
+                </View>
                 <View style={{
-                    borderColor: COLORS.primary,
+                    // borderColor: COLORS.primary,
                     paddingHorizontal: 0,
                     position: "absolute",
-                    top: 600,
+                    top: screenHeight * 0.75,
                     width: "100%",
                     marginLeft: 22
                     // justifyContent: "center"
                 }}>
 
                     <Button
-                        title="Join Now"
+                        title="Sign in with Email"
                         onPress={() => navigation.navigate("LoginFIFA")}
                         style={{
                             marginTop: 22,
+                            borderColor: COLORS.primary,
                             width: "100%",
                             color: COLORS.black
                         }}
                     />
                     <Button
-                        title="Join Now"
+                        title="Login with guest"
                         onPress={() => navigation.navigate("LoginFIFA")}
                         style={{
                             marginTop: 22,
+                            borderColor: COLORS.grey,
+                            backgroundColor: COLORS.grey,
+                            // textColor: 
                             width: "100%",
                             color: COLORS.black
                         }}

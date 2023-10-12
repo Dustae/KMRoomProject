@@ -8,6 +8,8 @@ import ReservationRequestScreen from './ReservationRequestScreen';
 import ReservationCheckInScreen from './ReservationCheckInScreen';
 import LoginFIFA from './LoginFIFA';
 import Welcome from './Welcome';
+// import Settings from './settings';
+import EditProfile from './editProfile';
 
 
 import LoginScreen from './LoginScreen'; // Import the LoginScreen component
@@ -41,7 +43,24 @@ function AppNavigator() {
           <Stack.Screen name="ReservationCheckIn" component={ReservationCheckInScreen} options={{title: null, headerLeft: null}}/>
           <Stack.Screen name="LoginFIFA" component={LoginFIFA} options={{title: null, headerLeft: null}}/>
           <Stack.Screen name="Welcome" component={Welcome} options={{title: null, headerLeft: null}}/>
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{title: null, headerLeft: null}}/>
+          {/* <Stack.Screen name="Settings" component={EditProfile} options={{title: null, headerLeft: null}}/> */}
+          {/* <Stack.Screen
+          name="BottomTabNavigation"
+          component={BottomTabNav}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            headerShown: false
+          }}
+        /> */}
         </>
+        
       ) : (
         <Stack.Screen name="Login">
           {(props) => <LoginScreen {...props} setAuthenticated={setAuthenticated} />}

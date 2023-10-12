@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar, Animated, SafeAreaView, TextInput } from 'react-native';
 import { ScrollView, Image } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
+import { Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from "expo-linear-gradient";
+import COLORS from './assets/colors';
 import IconM from 'react-native-vector-icons/MaterialIcons';
-
+// import Settings from './settings';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
 
+// const navigation = useNavigation();
 
 
 export default class ReservationScreen extends Component {
@@ -33,12 +38,17 @@ export default class ReservationScreen extends Component {
     StatusBar.setBarStyle('dark-content');
     // StatusBar.setBackgroundColor('red'); // Change the background color to red
   }
+  // navigateToEditProfile = () => {this.props.navigation.navigate("EditProfile")};
   handleBoxPress = (boxNumber) => {
     // Implement your logic here when a box is clicked
     // alert(`Box ${boxNumber} clicked!`);
     // Navigate to ReservationDetailsScreen
     this.props.navigation.navigate('Reservation');
   };
+
+  handleEditPro = () => {
+    this.props.navigation.navigate('EditProfile');};
+  
 
   // Callback function to handle date selection
   handleDateSelected = (date) => {
@@ -61,14 +71,20 @@ export default class ReservationScreen extends Component {
       textDecorationLine: 'underline', // Add underline for selected dates
     };
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white', }}>
+      <LinearGradient
+            style={{flex: 1}}
+            colors={[COLORS.secondary, 
+                    COLORS.primary]}
+            start={{ x: 0, y: 0 }} // Adjust the start point
+            end={{ x: 1, y: 0 }} // Adjust the end point
+            >
         <ScrollView contentContainerStyle={styles.scrollViewContainer} showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
+          <View style={styles.container }>
             <View style={[{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
-              marginTop: 10,
+              top: 30
             }]}>
               <View style={[{
                 width: 40,
@@ -77,9 +93,9 @@ export default class ReservationScreen extends Component {
                 backgroundColor: 'white',
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 3 },
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                elevation: 4, // Android shadow
+                shadowOpacity: 0.5,
+                shadowRadius: 1,
+                elevation: 5, // Android shadow
               }]}>
                 {/* You can place your profile picture here */}
                 <Image
@@ -92,12 +108,16 @@ export default class ReservationScreen extends Component {
                 fontSize: 18,
                 fontWeight: 'normal',
               }]}>Hi, TANATON</Text>
+
+              {/* ------------------------------------------------------------------------------------- */}
             </View>
 
             <View style={[{
               flex: 1,
               alignItems: 'center',
-            }]}>
+              
+              
+              }]}>
               <View style={[{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -115,6 +135,7 @@ export default class ReservationScreen extends Component {
                 shadowOffset: { width: 0, height: 3 },
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
+                
               }]}>
                 <IconM name="search" size={24} color="gray" style={styles.icon} />
                 <TextInput
@@ -125,7 +146,12 @@ export default class ReservationScreen extends Component {
               </View>
             </View>
 
-
+          <View style={[{
+              backgroundColor:COLORS.white,
+              padding: 10,
+              borderRadius: 20
+              
+              }]}>
             <View>
               <CalendarStrip
                 scrollable
@@ -159,7 +185,7 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.textContent}>
-                    <Text style={styles.textbold}>5th floor libary</Text>
+                    <Text style={styles.textbold}>1st floor libary</Text>
                     <Text style={styles.description}>Description of Room 1st goes here</Text>
                     <View style={[styles.statusContainer, {}]}>
                       <Text style={styles.statusText}>Status:</Text>
@@ -188,7 +214,7 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.textContent}>
-                    <Text style={styles.textbold}>5th floor libary</Text>
+                    <Text style={styles.textbold}>2nd floor libary</Text>
                     <Text style={styles.description}>Description of Room 1st goes here</Text>
                     <View style={[styles.statusContainer, {}]}>
                       <Text style={styles.statusText}>Status:</Text>
@@ -215,7 +241,7 @@ export default class ReservationScreen extends Component {
                     />
                   </View>
                   <View style={styles.textContent}>
-                    <Text style={styles.textbold}>5th floor library</Text>
+                    <Text style={styles.textbold}>3th floor library</Text>
                     <Text style={styles.description}>Description of Room 1st goes here</Text>
                     <View style={[styles.statusContainer, {}]}>
                       <Text style={styles.statusText}>Status:</Text>
@@ -255,7 +281,7 @@ export default class ReservationScreen extends Component {
                 </View>
               </TouchableOpacity>
             </View>
-
+            </View>
           </View>
         </ScrollView>
         <View style={[{
@@ -285,18 +311,21 @@ export default class ReservationScreen extends Component {
           }]}>
             <Image source={require('./picture/mid.png')} style={styles.icon} />
           </TouchableOpacity>
-          <TouchableOpacity style={[{
-            flex: 1,
-            alignItems: 'center',
-          }]}>
-            <Image source={require('./picture/right.png')} style={[{
-              width: 24, // Adjust the width and height as needed
-              height: 24,
-              resizeMode: 'contain', // Ensure the icon scales properly
-            }]} />
+          
+          <TouchableOpacity onPress={this.handleEditPro} style={{ flex: 1, alignItems: 'center' }}>
+            <Image
+              source={require('./picture/right.png')}
+              style={{
+                width: 24,
+                height: 24,
+                resizeMode: 'contain',
+              }}
+                />
           </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      
+      </View>
+        
+      </LinearGradient>
 
 
 
@@ -304,6 +333,19 @@ export default class ReservationScreen extends Component {
 
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   statusContainer: {
@@ -361,13 +403,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 15,
-    padding: 8, // ขอบบนรูปกับขอบกล่อง
-    marginVertical: 10, // ความห่างของแต่ละกล่องบนล่าง
-    backgroundColor: 'white',
-    elevation: 2,
-    shadowColor: '#000',
+    padding: 10, // ขอบบนรูปกับขอบกล่อง
+    marginVertical: 4, // ความห่างของ0แต่ละกล่องบนล่าง
+    marginHorizontal: 2,
+    backgroundColor: COLORS.white,
+    elevation: 15,
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0,
     shadowRadius: 8,
   },
   imageContainer: {
@@ -390,15 +433,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   description: {
-    fontSize: 14, // Adjust the font size as needed
+    fontSize: 12, // Adjust the font size as needed
     color: 'gray', // You can adjust the color
     textAlign: 'left',
   },
   scrollViewContainer: {
     flexGrow: 1,
     alignItems: 'center',
+    // gap:10
   },
   container: {
     flex: 1,
+    // backgroundColor:COLORS.white
   },
 });

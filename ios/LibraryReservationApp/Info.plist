@@ -49,9 +49,22 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>UIStatusBarStyle</key>
-  <string>UIStatusBarStyleDefault</string>
-  <key>CADisableMinimumFrameDurationOnPhone</key>
-  <true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>LeagueSpartan-VariableFont_wght.ttf</string>
+		<string>LeagueSpartan-Black.ttf</string>
+		<string>LeagueSpartan-Bold.ttf</string>
+		<string>LeagueSpartan-ExtraBold.ttf</string>
+		<string>LeagueSpartan-ExtraLight.ttf</string>
+		<string>LeagueSpartan-Light.ttf</string>
+		<string>LeagueSpartan-Medium.ttf</string>
+		<string>LeagueSpartan-Regular.ttf</string>
+		<string>LeagueSpartan-SemiBold.ttf</string>
+		<string>LeagueSpartan-Thin.ttf</string>
+	</array>
 </dict>
 </plist>
