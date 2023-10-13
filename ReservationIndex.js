@@ -48,6 +48,10 @@ export default class ReservationScreen extends Component {
 
   handleEditPro = () => {
     this.props.navigation.navigate('EditProfile');};
+    
+  handleList = () => {
+    this.props.navigation.navigate('ReservationList');};
+  
   
 
   // Callback function to handle date selection
@@ -299,19 +303,16 @@ export default class ReservationScreen extends Component {
           shadowOpacity: 0.2,
           shadowRadius: 8,
         }]}>
-          <TouchableOpacity style={[{
-            flex: 1,
-            alignItems: 'center',
-          }]}>
+          <TouchableOpacity style={[{flex: 1,alignItems: 'center'}]}>
             <Image source={require('./picture/left.png')} style={styles.icon} />
           </TouchableOpacity>
-          <TouchableOpacity style={[{
-            flex: 1,
-            alignItems: 'center',
-          }]}>
+
+
+          <TouchableOpacity onPress={this.handleList} style={{ flex: 1, alignItems: 'center' }}>
             <Image source={require('./picture/mid.png')} style={styles.icon} />
           </TouchableOpacity>
           
+
           <TouchableOpacity onPress={this.handleEditPro} style={{ flex: 1, alignItems: 'center' }}>
             <Image
               source={require('./picture/right.png')}

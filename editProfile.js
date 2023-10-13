@@ -6,6 +6,7 @@ import {
     Image,
     TextInput,
     Modal,
+    Dimensions
   } from "react-native";
   import React, { useState } from "react";
   import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +18,9 @@ import {
 //   import FONTS from "./constants/font"
   import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
   
+  const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+const imageSize = Math.min(screenWidth, screenHeight) * 0.9;
   export const SIZES = {
     // global SIZES
     base: 8,
@@ -138,12 +142,12 @@ export const FONTS = {
                 onSelectedChange={(date) => setSelectedStartDate(date)}
                 options={{
                   backgroundColor: COLORS.primary,
-                  textHeaderColor: "#469ab6",
+                  textHeaderColor: COLORS.white,
                   textDefaultColor: COLORS.white,
-                  selectedTextColor: COLORS.white,
-                  mainColor: "#469ab6",
+                  selectedTextColor: COLORS.secondary,
+                  mainColor:COLORS.white,
                   textSecondaryColor: COLORS.white,
-                  borderColor: "rgba(122,146,165,0.1)",
+                  borderColor: COLORS.white,
                 }}
               />
   
@@ -161,7 +165,10 @@ export const FONTS = {
         style={{
           flex: 1,
           backgroundColor: COLORS.white,
-          paddingHorizontal: 22,
+          // paddingHorizontal: 22,
+          paddingHorizontal: screenWidth*0.04,
+          // position: "absolute",
+          top: screenHeight * 0.03,
         }}
       >
         <View
@@ -171,19 +178,37 @@ export const FONTS = {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity
+        <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{
-              position: "absolute",
+            
+          style={[{
+            top: 10,
               left: 0,
-            }}
-          >
-            <MaterialIcons
+              position:"absolute",
+              width: 40,
+              height: 40,
+              borderRadius: 20, // Half of the width/height to create a circle
+              backgroundColor: 'white',
+              borderColor: 'gray',
+              borderWidth: 0.5,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 10,
+          }]}
+      >
+          <View style={[{
+              alignItems: 'center',
+              justifyContent: 'center',
+          }]}>
+              <MaterialIcons
               name="keyboard-arrow-left"
               size={24}
-              color={COLORS.black}
+              color={COLORS.primary}
             />
-          </TouchableOpacity>
+          </View>
+      </TouchableOpacity>
+            
+         
   
           <Text style={{ ...FONTS.h4 }}>Edit Profile</Text>
         </View>
@@ -199,10 +224,10 @@ export const FONTS = {
               <Image
                 source={{ uri: selectedImage }}
                 style={{
-                  height: 170,
-                  width: 170,
+                  height: screenHeight * 0.2,
+                  width: screenWidth * 0.4,
                   borderRadius: 85,
-                  borderWidth: 2,
+                  borderWidth: 4,
                   borderColor: COLORS.primary,
                 }}
               />
@@ -211,13 +236,13 @@ export const FONTS = {
                 style={{
                   position: "absolute",
                   bottom: 0,
-                  right: 10,
+                  left: screenWidth * 0.32,
                   zIndex: 9999,
                 }}
               >
                 <MaterialIcons
                   name="photo-camera"
-                  size={32}
+                  size={35}
                   color={COLORS.primary}
                 />
               </View>
