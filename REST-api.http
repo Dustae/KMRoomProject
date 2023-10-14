@@ -1,12 +1,45 @@
-### 
+### Booking room
 POST http://localhost:8080/api/create HTTP/1.1 
 Content-Type: application/json
 
 {
-  "room": "KM123",
-  "status": "full",
-  "name": "KuJonglaew"
+  "Booking_Description" : "",
+  "Booking_Status": "Reserved",
+  "Booking_date": "15/10/2023",
+  "Booking_period": "8:30 - 10:20",
+  "Room_ID" : "KM5",
+  "User_Email" : "Phongprawi.ratt@kmutt.ac.th"
 }
 
-###
-GET     
+### Get booking room status
+GET http://localhost:8080/api/room HTTP/1.1 
+Content-Type: application/json
+
+{
+  "Booking_date": "14/10/2023"
+}  
+
+### Login
+POST http://localhost:8080/api/authen HTTP/1.1 
+Content-Type: application/json
+
+{
+  "email" : "Phongprawi.ratt@kmutt.ac.th",
+  "password": "Password1234"
+}
+
+### List booking
+GET  http://localhost:8080/api/list HTTP/1.1 
+Content-Type: application/json
+
+{
+  "email": "Phongprawi.ratt@kmutt.ac.th"
+}
+
+### Delete booking
+DELETE  http://localhost:8080/api/delete HTTP/1.1 
+Content-Type: application/json
+
+{
+  "id": "7GxbkQPXTTPRWPCE9Y9n"
+}
