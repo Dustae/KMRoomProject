@@ -1,0 +1,12 @@
+### 
+POST http://localhost:8080/api/create HTTP/1.1 
+Content-Type: application/json
+
+{
+  "room": "KM123",
+  "status": "full",
+  "name": "KuJonglaew"
+}
+
+###
+GET     
