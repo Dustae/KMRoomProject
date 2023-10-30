@@ -1,5 +1,5 @@
 const { use } = require('../Routes/room');
-const serviceAccount = require('../kmuttlib-376a8-firebase-adminsdk-3lsrn-4a528579ba.json');
+const serviceAccount = require('../key.json');
 const admin = require('firebase-admin');
 
 admin.initializeApp( { 
@@ -29,6 +29,13 @@ exports.CreateBooking = async (req , res) => {
             Booking_period : req.body.Booking_period,
             Room_ID : req.body.Room_ID,
             User_Email : req.body.User_Email,
+            Booking_for : req.body.Booking_for,
+            User_1 : req.body.User_1,
+            User_2 : req.body.User_2,
+            User_3 : req.body.User_3,
+            User_4 : req.body.User_4,
+            User_5 : req.body.User_5,
+            User_6 : req.body.User_6
         };
   
 
@@ -116,8 +123,10 @@ exports.CheckReservation = async (req, res) => {
         if( !userData.empty) { 
             res.status(200).json({ message: "Here's bookings data", status: "success", data: jsonData})
         }
+        else {
+            res.status(404).json({ message: 'Not found reservation' , status: 'error'})
 
-        res.status(404).json({ message: 'Not found reservation' , status: 'error'})
+        }
     } catch (error){ 
         console.error(error)
         res.status(500).json( { message: 'Can not check reservation', status: 'error', err_note: error.message});
