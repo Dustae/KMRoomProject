@@ -6,11 +6,11 @@ const {CreateBooking , GetStatusRoom  , Login, CheckReservation, DeleteReservati
 // call at  http://localhost:8080/api/create (sned ONLY JSON with POST method)
 router.post('/create', CreateBooking)
 
-router.get('/room', GetStatusRoom)
+router.post('/room', GetStatusRoom)
 
 router.post('/authen', Login)
 
-router.get('/list', CheckReservation)
+router.post('/list', CheckReservation)
 
 router.delete('/delete', DeleteReservation)
 
