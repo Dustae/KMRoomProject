@@ -20,28 +20,38 @@ const extractKeys = (obj, keys) => {
 
 exports.CreateBooking = async (req , res) => { 
     try{ 
+        const checkBooking = await db.collection('Bookings')
+        .where('Booking_date', '==', req.body.Booking_date)
+        .where('Booking_period', '==', req.body.Booking_period).get();
+        console.log(checkBooking)
+        if(checkBooking._size > 0) { 
+            res.status(200).json( { message: 'This time has already booking', status: 'error'});
+        }
+
+        // no booking at that time 
+        else { 
+            const userJSON = { 
+                Booking_Description : req.body.Booking_Description,
+                Booking_date : req.body.Booking_date,
+                Booking_Status : req.body.Booking_Status,
+                Booking_period : req.body.Booking_period,
+                Room_ID : req.body.Room_ID,
+                User_Email : req.body.User_Email,
+                Booking_for : req.body.Booking_for,
+                User_1 : req.body.User_1,
+                User_2 : req.body.User_2,
+                User_3 : req.body.User_3,
+                User_4 : req.body.User_4,
+                User_5 : req.body.User_5,
+                User_6 : req.body.User_6
+            };
+      
+    
+            const respone =  await db.collection('Bookings').add(userJSON);
         
-
-        const userJSON = { 
-            Booking_Description : req.body.Booking_Description,
-            Booking_date : req.body.Booking_date,
-            Booking_Status : req.body.Booking_Status,
-            Booking_period : req.body.Booking_period,
-            Room_ID : req.body.Room_ID,
-            User_Email : req.body.User_Email,
-            Booking_for : req.body.Booking_for,
-            User_1 : req.body.User_1,
-            User_2 : req.body.User_2,
-            User_3 : req.body.User_3,
-            User_4 : req.body.User_4,
-            User_5 : req.body.User_5,
-            User_6 : req.body.User_6
-        };
-  
-
-        const respone =  await db.collection('Bookings').add(userJSON);
-        console.log(respone , "Create Booking success")
-        res.status(200).json( { message: 'Reservation success', status: 'success'});
+            res.status(200).json( { message: 'Reservation success', status: 'success'});
+        }
+        
     } catch(error) { 
         console.error(error)
         res.status(500).json( { message: 'Can not reservation', status: 'error', err_note: error.message});
@@ -53,6 +63,7 @@ exports.GetStatusRoom = async (req, res ) => {
         const date = req.body.Booking_date;
 
         const respone = await db.collection('Bookings').where('Booking_date', '==', date).get();
+
         
         const userPromises = [];
 
@@ -64,8 +75,9 @@ exports.GetStatusRoom = async (req, res ) => {
               }
           });
 
+
         const Username = await Promise.all(userPromises);
-        console.log(Username[0].data())
+
 
         // const RoomStatus = respone.docs.map(doc => ({
         //     id: doc.id,
@@ -124,7 +136,7 @@ exports.CheckReservation = async (req, res) => {
             res.status(200).json({ message: "Here's bookings data", status: "success", data: jsonData})
         }
         else {
-            res.status(404).json({ message: 'Not found reservation' , status: 'error'})
+            res.status(200).json({ message: 'Not found reservation' , status: 'error', data: { "booking" : []}})
 
         }
     } catch (error){ 
@@ -138,7 +150,7 @@ exports.DeleteReservation = async (req,res) => {
         const id = req.body.id
         const rtvalue = await db.collection('Bookings').doc(id).delete();
         if ( !rtvalue.empty) { 
-            res.status(200).json({message: 'delete success', status: 'success', data: rtvalue})
+            res.status(204).json({message: 'delete success', status: 'success', data: rtvalue})
         }
 
     } catch (error) { 
