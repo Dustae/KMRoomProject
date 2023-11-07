@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan')
 const { readdirSync } = require('fs')
+const cors = require('cors');
 
 // const admin = require('firebase-admin');
 // const serviceAccount = require('./kmuttlib-376a8-firebase-adminsdk-3lsrn-4a528579ba.json');
@@ -18,6 +19,7 @@ app.use(express.urlencoded({extended: true}));
 // const db = admin.firestore();
 
 app.use(morgan('dev'))
+app.use(cors())
 
 
 

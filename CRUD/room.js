@@ -103,7 +103,9 @@ exports.GetStatusRoom = async (req, res ) => {
 
 exports.Login = async (req , res) => { 
     try{ 
-        const { email , password }= req.body
+        const password = req.body.password
+        const email = req.body.email.toLowerCase()
+      
 
         const userCredential = await db.collection('Users').where('User_Email', '==', email).where('User_Password', '==', password).get()
         const userData = userCredential.docs[0].data()

@@ -23,15 +23,15 @@ POST http://localhost:8080/api/room HTTP/1.1
 Content-Type: application/json
 
 {
-  "Booking_date": "06/11/2023"
+  "Booking_date": "17/10/2023" 
 }  
 
-### Login
+### Login 
 POST http://localhost:8080/api/authen HTTP/1.1 
 Content-Type: application/json
 
 {
-  "email" : "Jedsada_chai@kmutt.ac.th",
+  "email" : "JedSaDa_chai@kmutt.ac.th",
   "password": "secret123"
 }
 
