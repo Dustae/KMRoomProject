@@ -20,6 +20,33 @@ const extractKeys = (obj, keys) => {
 
 exports.CreateBooking = async (req , res) => { 
     try{ 
+
+         // Check if required fields are present in req.body
+         const requiredFields = [
+            'Booking_Description',
+            'Booking_date',
+            'Booking_Status',
+            'Booking_period',
+            'Room_ID',
+            'User_Email',
+            'Booking_for',
+            'User_1',
+            'User_2',
+            'User_3',
+            'User_4',
+            'User_5',
+            'User_6',
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+
         const checkBooking = await db.collection('Bookings')
         .where('Booking_date', '==', req.body.Booking_date)
         .where('Booking_period', '==', req.body.Booking_period).get();
@@ -60,6 +87,19 @@ exports.CreateBooking = async (req , res) => {
 
 exports.GetStatusRoom = async (req, res ) => { 
     try{
+        const requiredFields = [
+            'Booking_date'
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+
         const date = req.body.Booking_date;
 
         const respone = await db.collection('Bookings').where('Booking_date', '==', date).get();
@@ -103,6 +143,20 @@ exports.GetStatusRoom = async (req, res ) => {
 
 exports.Login = async (req , res) => { 
     try{ 
+        const requiredFields = [
+            "email" ,
+            "password"
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+
         const password = req.body.password
         const email = req.body.email.toLowerCase()
       
@@ -125,6 +179,19 @@ exports.Login = async (req , res) => {
 
 exports.CheckReservation = async (req, res) => { 
     try{
+        const requiredFields = [
+            "email" 
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+
         const email = req.body.email
         const userData = await db.collection('Bookings').where('User_Email', '==', email).get()
         const jsonData = { 
@@ -149,6 +216,19 @@ exports.CheckReservation = async (req, res) => {
 
 exports.DeleteReservation = async (req,res) => { 
     try{ 
+        const requiredFields = [
+            "id" 
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+        
         const id = req.body.id
         const rtvalue = await db.collection('Bookings').doc(id).delete();
         if ( !rtvalue.empty) { 

@@ -9,11 +9,10 @@ Content-Type: application/json
   "Booking_period": "10:30 - 12:20",
   "Booking_for" : "CPE334", 
   "Room_ID" : "KM5",
-  "User_Email" : "Phongprawi.ratt@kmutt.ac.th",
+  "User_Email" : "phongprawi.ratt@kmutt.ac.th",
   "User_1" : "nut",
   "User_2" : "fifa",
   "User_3" : "mesa",
-  "User_4" : "kla",
   "User_5" : "beer",
   "User_6" : ""
 }
