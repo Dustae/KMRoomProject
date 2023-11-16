@@ -40,7 +40,7 @@ exports.CreateBooking = async (req , res) => {
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return res.status(400).json({
+                return res.status(200).json({
                     message: `Missing required field: ${field}`,
                     status: 'error',
                 });
@@ -93,7 +93,7 @@ exports.GetStatusRoom = async (req, res ) => {
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return res.status(400).json({
+                return res.status(200).json({
                     message: `Missing required field: ${field}`,
                     status: 'error',
                 });
@@ -150,7 +150,7 @@ exports.Login = async (req , res) => {
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return res.status(400).json({
+                return res.status(200).json({
                     message: `Missing required field: ${field}`,
                     status: 'error',
                 });
@@ -185,7 +185,7 @@ exports.CheckReservation = async (req, res) => {
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return res.status(400).json({
+                return res.status(200).json({
                     message: `Missing required field: ${field}`,
                     status: 'error',
                 });
@@ -222,7 +222,7 @@ exports.DeleteReservation = async (req,res) => {
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return res.status(400).json({
+                return res.status(200).json({
                     message: `Missing required field: ${field}`,
                     status: 'error',
                 });
