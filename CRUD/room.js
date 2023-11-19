@@ -49,14 +49,29 @@ exports.CreateBooking = async (req , res) => {
 
         const checkBooking = await db.collection('Bookings')
         .where('Booking_date', '==', req.body.Booking_date)
-        .where('Booking_period', '==', req.body.Booking_period).get();
-        console.log(checkBooking)
+        .where('Booking_period', '==', req.body.Booking_period)
+        .where('Room_ID', '==', req.body.Room_ID).get();
+        
         if(checkBooking._size > 0) { 
-            res.status(200).json( { message: 'This time has already booking', status: 'error'});
+            res.status(200).json( { 
+                message: 'This time has already booking', 
+                status: 'error'});
         }
 
         // no booking at that time 
         else { 
+
+            const checkSamePerson = await db.collection('Bookings')
+            .where('Booking_date', '==', req.body.Booking_date)
+            .where('Booking_period', '==', req.body.Booking_period)
+            .where('User_Email', '==', req.body.User_Email).get();
+
+            if( checkSamePerson._size > 0) { 
+                return res.status(200).json( { 
+                    message: 'Can not reserve the same period', 
+                    status: 'error'});
+            }
+
             const userJSON = { 
                 Booking_Description : req.body.Booking_Description,
                 Booking_date : req.body.Booking_date,
@@ -74,7 +89,7 @@ exports.CreateBooking = async (req , res) => {
             };
       
     
-            const respone =  await db.collection('Bookings').add(userJSON);
+            const response =  await db.collection('Bookings').add(userJSON);
         
             res.status(200).json( { message: 'Reservation success', status: 'success'});
         }

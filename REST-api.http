@@ -3,18 +3,19 @@ POST http://localhost:8080/api/create HTTP/1.1
 Content-Type: application/json
 
 { 
-  "Booking_Description" : "",
+  "Booking_Description" : "test",
   "Booking_Status": "Reserved",
-  "Booking_date": "06/11/2023",
-  "Booking_period": "10:30 - 12:20",
+  "Booking_date": "16/11/2023",
+  "Booking_period": "12:30 - 14:20",
   "Booking_for" : "CPE334", 
   "Room_ID" : "KM5",
   "User_Email" : "phongprawi.ratt@kmutt.ac.th",
   "User_1" : "nut",
   "User_2" : "fifa",
   "User_3" : "mesa",
+  "User_4" : "mesa",
   "User_5" : "beer",
-  "User_6" : ""
+  "User_6" : "sdg"
 }
 
 ### Get booking room status
