@@ -95,7 +95,7 @@ exports.CreateBooking = async (req , res) => {
         }
         
     } catch(error) { 
-        console.error(error)
+      
         res.status(500).json( { message: 'Can not reservation', status: 'error', err_note: error.message});
     }
 }
@@ -151,7 +151,7 @@ exports.GetStatusRoom = async (req, res ) => {
 
         res.status(200).send(jsonData);
     } catch (error){ 
-        console.error(error)
+     
         res.status(500).json( { message: 'Can not get room status', status: 'error', err_note: error.message});
     }
 }
@@ -187,7 +187,7 @@ exports.Login = async (req , res) => {
           console.log('Log in success')
           res.status(200).json( { message: 'Log in success', status: 'success', data: userData});
     } catch  (error){ 
-        console.error(error)
+     
         res.status(500).json( { message: 'Can not login', status: 'error', err_note: error.message});
     }
 }
@@ -224,7 +224,7 @@ exports.CheckReservation = async (req, res) => {
 
         }
     } catch (error){ 
-        console.error(error)
+
         res.status(500).json( { message: 'Can not check reservation', status: 'error', err_note: error.message});
     }
 }
@@ -251,7 +251,34 @@ exports.DeleteReservation = async (req,res) => {
         }
 
     } catch (error) { 
-        console.error(error)
         res.status(500).json( { message: 'Can not delete', status: 'error', err_note: error.message});
+    }
+}
+
+exports.UpdateBookingStatus = async (req, res) => { 
+    try{
+        const requiredFields = [
+            "id" ,
+            "Booking_Status"
+        ];
+
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(200).json({
+                    message: `Missing required field: ${field}`,
+                    status: 'error',
+                });
+            }
+        }
+
+        const id = req.body.id
+        const Booking_Status = req.body.Booking_Status
+        const updateData = await db.collection('Bookings').doc(id).update({'Booking_Status': Booking_Status});
+
+        if ( !updateData.empty) { 
+            res.status(200).json({message: 'Update Booking status success', status: 'success', data: updateData})
+        }
+    } catch (error){ 
+        res.status(500).json( { message: 'Can not check Update booking status', status: 'error', err_note: error.message});
     }
 }
