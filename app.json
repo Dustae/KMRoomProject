@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "LibraryReservationApp",
+    "slug": "libraryreservationapp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "02b30b10-485f-4dce-b2c6-798a3a81de58"
+      }
+    },
+    "androidNavigationBar": {
+      "visible": "immersive"
+    }
+  }
+}
